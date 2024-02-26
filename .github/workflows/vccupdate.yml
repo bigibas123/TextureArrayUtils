@@ -1,0 +1,35 @@
+name: Trigger VCC Update
+on: 
+  release:
+    types: 
+      - published
+      - unpublished
+      - deleted
+      - prereleased
+      - released
+  workflow_run:
+    workflows: ["Create release"]
+    types:
+      - completed
+  workflow_dispatch:
+env:
+  VCC_REPO: VCC
+
+jobs:
+  trigger_vcc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@v1.6.2
+        with:
+          app-id: ${{ vars.DEPLOY_APP_ID }}
+          private-key: ${{ secrets.DEPLOY_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ env.VCC_REPO }}
+      - name: Use the token
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          gh workflow run --repo ${{ github.repository_owner }}/${{ env.VCC_REPO }} build-listing.yml 
+ 

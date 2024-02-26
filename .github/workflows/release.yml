@@ -1,0 +1,86 @@
+name: Create release
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  PACKAGE_JSON: "./package.json"
+  PACKAGE_PATH: "."
+
+
+jobs:        
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        with: 
+          fetch-tags: true
+      - run: |
+          git fetch --unshallow --tags
+          echo $?
+          git tag --list
+      
+      
+      - name: Get package properties
+        id: package_data
+        uses: zoexx/github-action-json-file-properties@1.0.4
+        with:
+          file_path: "${{ env.PACKAGE_JSON }}"
+
+      - name: Get last tag
+        run: |
+          echo "old_tag=$(git describe --tags --abbrev=0)" | tee -a $GITHUB_ENV
+
+      - name: Parse git tag version
+        id: tag_version
+        uses: madhead/semver-utils@v3.1.0
+        with:
+          lenient: false
+          version: ${{ env.old_tag }}
+          compare-to: ${{ steps.package_data.outputs.version }}
+      - name: Pick Incremented old tag
+        id: tag_pre_release
+        if: ${{ steps.tag_version.outputs.comparison-result != '<' }}
+        run: |
+          echo "version=${{ steps.tag_version.outputs.inc-patch  }}" >> $GITHUB_ENV
+      - name: Pick package version
+        id: tag_post_release
+        if: ${{ steps.tag_version.outputs.comparison-result == '<' }}
+        run: |
+          echo "version=${{ steps.package_data.outputs.version }}" >> $GITHUB_ENV
+      - name: Replace version in package.json
+        run: jq ' .version = "${{ env.version }}"' ${{ env.PACKAGE_JSON }}  > tmp && mv tmp ${{ env.PACKAGE_JSON }}
+        
+      - name: Track Package Meta Files
+        run: |
+          find "." -name \*.meta >> metaList
+      
+      - name: Create UnityPackage
+        uses: pCYSl5EDgo/create-unitypackage@cfcd3cf0391a5ef1306342794866a9897c32af0b
+        with:
+          package-path: ${{ steps.package_data.outputs.name }}-${{ env.version }}.unitypackage
+          include-files: metaList
+      - name: Create Package Zip
+        working-directory: "${{ env.PACKAGE_PATH }}"
+        run: zip -r "${{ steps.package_data.outputs.name }}-${{ env.version }}.zip" . -x metaList ${{ steps.package_data.outputs.name }}-${{ env.version }}.unitypackage
+
+      - name: Create Tag
+        id: create_tag
+        uses: rickstaa/action-create-tag@88dbf7ff6fe2405f8e8f6c6fdfd78829bc631f83
+        with:
+          tag: ${{ env.version }}
+      
+      - name: Make Release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
+        with:
+          files: |
+            ${{ steps.package_data.outputs.name }}-${{ env.version }}.unitypackage
+            ${{ steps.package_data.outputs.name }}-${{ env.version }}.zip
+            ${{ env.PACKAGE_JSON }}
+          tag_name: ${{ env.version }}

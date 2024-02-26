@@ -1,0 +1,10 @@
+{
+  "name": "tk.dingemans.bigibas123.texturearrayutils",
+  "references": [
+  ],
+  "precompiledReferences": [
+  ],
+  "includePlatforms": [
+	"Editor"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "tk.dingemans.bigibas123.texturearrayutils",
+  "displayName": "Texture Array Utilities",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": {
+    "name": "bigibas123"
+  },
+  "unity": "2022.3",
+  "description": "Some utilities to make the creation of non-flipbook Texture2DArrays easier",
+  "vpmDependencies": {},
+  "url": "https://github.com/bigibas123/tk.dingemans.bigibas123.texturearrayutils.git",
+  "legacyFolders": {},
+  "legacyFiles": {},
+  "legacyPackages": []
+}
