@@ -9,7 +9,7 @@
   "unity": "2022.3",
   "description": "Some utilities to make the creation of non-flipbook Texture2DArrays easier",
   "vpmDependencies": {},
-  "url": "https://github.com/bigibas123/tk.dingemans.bigibas123.texturearrayutils.git",
+  "url": "https://github.com/bigibas123/TextureArrayUtils.git",
   "legacyFolders": {},
   "legacyFiles": {},
   "legacyPackages": []
