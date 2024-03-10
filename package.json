@@ -1,7 +1,7 @@
 {
-  "name": "tk.dingemans.bigibas123.texturearrayutils",
+  "name": "cc.dingemans.bigibas123.texturearrayutils",
   "displayName": "Texture Array Utilities",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "author": {
     "name": "bigibas123"
