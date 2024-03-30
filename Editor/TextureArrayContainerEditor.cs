@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
-namespace tk.dingemans.bigibas123.texturearrayutils
+namespace cc.dingemans.bigibas123.texturearrayutils
 {
     [CustomEditor(typeof(TextureArrayContainer))]
     public class TextureArrayContainerEditor : UnityEditor.Editor

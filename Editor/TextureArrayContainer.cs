@@ -29,7 +29,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
-namespace tk.dingemans.bigibas123.texturearrayutils
+namespace cc.dingemans.bigibas123.texturearrayutils
 {
     [CreateAssetMenu(fileName = "Texture Array Container", menuName = "Bigi/Texture Array Container", order = 3)]
     public class TextureArrayContainer : ScriptableObject
