@@ -72,13 +72,13 @@ namespace cc.dingemans.bigibas123.texturearrayutils
             {
                 var tex = textures[texIdx];
                 if (tex is null || tex == null) { continue; }
-                Debug.Log("Processing #"+curTexNumber+": " + tex + " gformat:" + tex.graphicsFormat + " tformat:" + tex.format + " " + tex.width + "x" + tex.height);
+                Debug.Log("Processing #"+curTexNumber+": " + tex + " gformat:" + tex.graphicsFormat + " tformat:" + tex.format + " " + tex.width + "x" + tex.height + " mips:"+tex.mipmapCount);
                 for (int mipMapLevel = 0; mipMapLevel < array.mipmapCount; mipMapLevel++)
                 {
-                    array.SetPixelData(tex.GetRawTextureData<ulong>(), mipMapLevel, curTexNumber++);
-
-                    //array.SetPixels(tex.GetPixels(mipMapLevel), texIdx, mipMapLevel);
+                    Graphics.CopyTexture(tex, 0, mipMapLevel, array, curTexNumber, mipMapLevel);
                 }
+
+                curTexNumber++;
             }
 
             array.Apply(true, true);
@@ -110,6 +110,8 @@ namespace cc.dingemans.bigibas123.texturearrayutils
                 Debug.LogError($"Texture: {tex.name} not the right size or format: ({tex.width}x{tex.height}@{tex.graphicsFormat}) array: {Width}x{Height}@{GraphicsFormat})");
                 return false;
             }
+
+            flags &= (~TextureCreationFlags.Crunch);
             return true;
         }
         private void RestoreTexturesSettings(IReadOnlyList<TextureImporterSettings> oldSettings)
