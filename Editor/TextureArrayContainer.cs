@@ -206,13 +206,27 @@ namespace cc.dingemans.bigibas123.texturearrayutils
         private string[] GetDependants(string us)
         {
             List<string> result = new List<string>();
-            string[] allAssets = AssetDatabase.GetAllAssetPaths();
-            foreach (var asset in allAssets)
+            try
             {
-                if(AssetDatabase.GetDependencies(asset,false).Contains(us))
+                string[] allAssets = AssetDatabase.GetAllAssetPaths();
+                foreach (var asset in allAssets)
                 {
-                  result.Add(asset);
+                    try
+                    {
+                        if (AssetDatabase.GetDependencies(asset, false).Contains(us))
+                        {
+                            result.Add(asset);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError(e);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e,this);
             }
             
             return result.ToArray();
