@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 
 namespace cc.dingemans.bigibas123.texturearrayutils
 {

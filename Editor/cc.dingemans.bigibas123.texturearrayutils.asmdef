@@ -1,5 +1,6 @@
 {
   "name": "cc.dingemans.bigibas123.texturearrayutils",
+  "rootNamespace": "cc.dingemans.bigibas123.texturearrayutils",
   "references": [
   ],
   "precompiledReferences": [
